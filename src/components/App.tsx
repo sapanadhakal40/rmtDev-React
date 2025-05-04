@@ -18,10 +18,12 @@ function App() {
   const [searchText, setSearchText] = useState("");
   //  const { jobItemsSliced: jobItems, isLoading } = useJobItems(searchText);
   const [jobItems, isLoading] = useJobItems(searchText);
+  const [activeId, setActiveId] = useState<number | null>(null);
 
   useEffect(() => {
     const handleHashChange = () => {
-      const id = window.location.hash.slice(1);
+      const id = +window.location.hash.slice(1);
+      setActiveId(id);
     };
     handleHashChange();
 
