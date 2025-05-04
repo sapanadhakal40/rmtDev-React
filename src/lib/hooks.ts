@@ -21,6 +21,29 @@ export function useActiveId() {
   return activeId;
 }
 
+export function useJobItem(id: number | null) {
+  const [jobItem, setJobItem] = useState(null);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchData = async () => {
+      const response = await fetch(`${BASE_API_URL}/${id}`);
+      const data = await response.json();
+      setJobItem(data.jobItem);
+    };
+    fetchData();
+  }, [id]);
+
+  return jobItem;
+}
+
+// export function useActiveJobItem() {
+//   const activeId = useActiveId();
+//   const jobItem = useJobItem(activeId);
+//   return jobItem;
+// }
+
 export function useJobItems(searchText: string) {
   const [jobItems, setJobItems] = useState<JobItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
