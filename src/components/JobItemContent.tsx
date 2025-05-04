@@ -1,10 +1,9 @@
-import { JobItemExpanded } from "../lib/types";
+import { useActiveId, useJobItem } from "../lib/hooks";
 import BookmarkIcon from "./BookmarkIcon";
 
-type JobItemContentProps = {
-  jobItem: JobItemExpanded | null;
-};
-export default function JobItemContent({ jobItem }: JobItemContentProps) {
+export default function JobItemContent() {
+  const activeId = useActiveId();
+  const jobItem = useJobItem(activeId);
   if (!jobItem) {
     return <EmptyJobContent />;
   }
