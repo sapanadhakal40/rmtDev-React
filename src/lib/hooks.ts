@@ -52,7 +52,7 @@ type JobItemsApiResponse = {
 const fetchJobItems = async (
   searchText: string
 ): Promise<JobItemsApiResponse> => {
-  const response = await fetch(`${BASE_API_URL}/${searchText}`);
+  const response = await fetch(`${BASE_API_URL}?search=${searchText}`);
   const data = await response.json();
   return data;
 };
@@ -74,7 +74,7 @@ export function useJobItems(searchText: string) {
   return {
     jobItems,
     isLoading,
-  };
+  } as const;
 }
 
 export function useDebounce<T>(value: T, delay = 500): T {
