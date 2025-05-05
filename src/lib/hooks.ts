@@ -106,3 +106,14 @@ export function useActiveId() {
   }, []);
   return activeId;
 }
+
+export function useLocalStorage(key: string, initialValue) {
+  const [value, setValue] = useState(
+    () => JSON.parse(localStorage.getItem(key) || JSON.stringify(initialValue)) //it only run initially and get from local storage
+    //key is parameter of function that can change
+  );
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [value, key]); //so key added here
+  return [value, setValue] as const; //array making renaming easier
+}
