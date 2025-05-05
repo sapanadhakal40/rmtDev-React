@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { JobItem, JobItemExpanded } from "./types";
 import { BASE_API_URL } from "./constants";
 import { useQuery } from "@tanstack/react-query";
 import { handleError } from "./utils";
+import { BookmarksContext } from "../context/BookmarksContextProvider";
 
 type JobItemApiResponse = {
   public: boolean;
@@ -107,7 +108,11 @@ export function useActiveId() {
   return activeId;
 }
 
-export function useLocalStorage(key: string, initialValue) {
+export function useLocalStorage<T>(
+  key: string,
+  initialValue: T //what we pass in and what we get out
+): [T, React.Dispatch<React.SetStateAction<T>>] {
+  //tuple
   const [value, setValue] = useState(
     () => JSON.parse(localStorage.getItem(key) || JSON.stringify(initialValue)) //it only run initially and get from local storage
     //key is parameter of function that can change
@@ -115,5 +120,16 @@ export function useLocalStorage(key: string, initialValue) {
   useEffect(() => {
     localStorage.setItem(key, JSON.stringify(value));
   }, [value, key]); //so key added here
+
   return [value, setValue] as const; //array making renaming easier
+}
+
+export function useBookmarksContext() {
+  const context = useContext(BookmarksContext);
+  if (!context) {
+    throw new Error(
+      "useBookmarksContext must be within a BookmarksContextProvider"
+    );
+  }
+  return context;
 }
