@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { JobItem, JobItemExpanded } from "./types";
 import { BASE_API_URL } from "./constants";
 import { useQuery } from "@tanstack/react-query";
+import { handleError } from "./utils";
 
 type JobItemApiResponse = {
   public: boolean;
@@ -27,10 +28,10 @@ export function useJobItem(id: number | null) {
       refetchOnWindowFocus: false,
       retry: false,
       enabled: Boolean(id),
-      onError: () => {},
+      onError: handleError,
     }
   );
-  console.log(data);
+  // console.log(data);
   const jobItem = data?.jobItem;
   const isLoading = isInitialLoading;
   return { jobItem, isLoading } as const;
@@ -65,9 +66,7 @@ export function useJobItems(searchText: string) {
       refetchOnWindowFocus: false,
       retry: false,
       enabled: Boolean(searchText),
-      onError: (error) => {
-        console.log(error);
-      },
+      onError: handleError,
     }
   );
   const jobItems = data?.jobItems;
