@@ -25,8 +25,10 @@ const fetchJobItem = async (id: number): Promise<JobItemApiResponse> => {
 export function useJobItem(id: number | null) {
   const { data, isInitialLoading } = useQuery(
     ["job-item", id],
-    () => (id ? fetchJobItem(id) : null),
-
+    () => {
+      if (!id) throw new Error("No id provided");
+      return fetchJobItem(id);
+    },
     {
       staleTime: 1000 * 60 * 60,
       refetchOnWindowFocus: false,
@@ -36,9 +38,10 @@ export function useJobItem(id: number | null) {
     }
   );
   // console.log(data);
-  const jobItem = data?.jobItem;
-  const isLoading = isInitialLoading;
-  return { jobItem, isLoading } as const;
+  return {
+    jobItem: data?.jobItem,
+    isLoading: isInitialLoading,
+  } as const;
 }
 
 //-----------------------------------------------------------------------------------
