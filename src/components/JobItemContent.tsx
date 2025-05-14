@@ -100,7 +100,7 @@ export default function JobItemContent() {
 function LoadingJobContent() {
   return (
     <section className="job-details">
-      <div>
+      <div className="job-details__loading">
         <Spinner />
       </div>
     </section>
