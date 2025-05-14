@@ -5,6 +5,8 @@ import { useQueries, useQuery } from "@tanstack/react-query";
 import { handleError } from "./utils";
 import { BookmarksContext } from "../context/BookmarksContextProvider";
 import { ActiveIdContext } from "../context/ActiveIdContextProvider";
+import { SearchTextContext } from "../context/SearchTextContextProvider";
+import { JobItemsContext } from "../context/JobItemsContextProvider";
 
 type JobItemApiResponse = {
   public: boolean;
@@ -83,7 +85,12 @@ const fetchJobItems = async (
   searchText: string
 ): Promise<JobItemsApiResponse> => {
   const response = await fetch(`${BASE_API_URL}?search=${searchText}`);
+  // const response = await fetch(
+  //   `${BASE_API_URL}${searchText ? `?search=${searchText}` : " "}`
+  // );
+  //
   const data = await response.json();
+  // console.log(data);
   return data;
 };
 
@@ -168,6 +175,26 @@ export function useActiveIdContext() {
   if (!context) {
     throw new Error(
       "useActiveIdContext must be within a ActiveIdContextProvider"
+    );
+  }
+  return context;
+}
+
+export function useSearchTextContext() {
+  const context = useContext(SearchTextContext);
+  if (!context) {
+    throw new Error(
+      "useSearchTextContext must be within a SearchTextContextProvider"
+    );
+  }
+  return context;
+}
+
+export function useJobItemsContext() {
+  const context = useContext(JobItemsContext);
+  if (!context) {
+    throw new Error(
+      "useJobItemsContext must be within a JobItemsContextProvider"
     );
   }
   return context;
