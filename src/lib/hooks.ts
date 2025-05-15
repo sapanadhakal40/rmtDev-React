@@ -152,7 +152,7 @@ export function useLocalStorage<T>(
   initialValue: T //what we pass in and what we get out
 ): [T, React.Dispatch<React.SetStateAction<T>>] {
   //tuple
-  const [value, setValue] = useState(
+  const [value, setValue] = useState<T>(
     () => JSON.parse(localStorage.getItem(key) || JSON.stringify(initialValue)) //it only run initially and get from local storage
     //key is parameter of function that can change
   );
@@ -160,7 +160,7 @@ export function useLocalStorage<T>(
     localStorage.setItem(key, JSON.stringify(value));
   }, [value, key]); //so key added here
 
-  return [value, setValue] as const; //array making renaming easier
+  return [value, setValue] //array making renaming easier
 }
 
 export function useBookmarksContext() {

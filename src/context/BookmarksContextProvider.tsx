@@ -20,8 +20,11 @@ export default function BookmarksContextProvider({
     "bookmarkedIds",
     []
   );
-  const { jobItems: bookmarkedJobItems, isLoading } =
-    useJobItems(bookmarkedIds);
+  const { jobItems, isLoading } = useJobItems(bookmarkedIds);
+
+  const bookmarkedJobItems: JobItemExpanded[] = jobItems.filter(
+    (item): item is JobItemExpanded => item !== undefined
+  );
 
   const handleToggleBookmark = (id: number) => {
     if (bookmarkedIds.includes(id)) {
